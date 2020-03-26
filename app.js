@@ -5,12 +5,11 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
-
-const placesRoutes = require('./routes/places-routes')
-const usersRoutes = require('./routes/users-routes')
+const routes = require('./routes/routes')
 const HttpError = require('./models/http-error')
 
 const app = express();
+
 
 app.use(bodyParser.json());
 
@@ -27,20 +26,20 @@ app.use((req, res, next) => {
     next();
   });
 
-app.use('/api/places',placesRoutes);///api/places/....
-app.use('/api/users',usersRoutes);
+
+app.use('/api',routes);
 
 app.use((req,res,next) => {
     const error = new HttpError('Could not find this route', 404)
     throw error;
 });
 
+
 app.use((error,req,res,next)=>{
     if(req.file){
         fs.unlink(req.file.path, (err) => {
             console.log(err);
-            console.log(req.file.path);
-            
+            console.log(req.file.path);  
         });
     }
     if(res.headerSent){
@@ -51,14 +50,17 @@ app.use((error,req,res,next)=>{
 })
 
 
+
+//Connect Database
+
+app.listen(process.env.PORT || 5000);
+
+
 mongoose
     .connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@merndb-xhnq4.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`)
     .then(() => {
-        app.listen(process.env.PORT || 5000);
     })
     .catch(err => {
-        console.log(23);
-        
         console.log(err);
     })
 

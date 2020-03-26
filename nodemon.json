@@ -2,7 +2,7 @@
     "env": {
         "DB_USER": "manu",
         "DB_PASSWORD": "academind123",
-        "DB_NAME": "places",
+        "DB_NAME": "API",
         "JWT_KEY": "Goweddfz4545illdfaInJudicwgh455rw4eeWorldCewat4545Traiwen"
     }
 }
